@@ -24,6 +24,9 @@ Visualize with gnuplot
     cd ..
     gnuplot -p plot.gnu
 
+For d = 0.1 and 10000 iterations, we get a result such as 
+![example](res.png "Example result")
+
 
 # Notes
  
