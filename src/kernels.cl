@@ -32,36 +32,7 @@ float acc = 0;
     result[get_group_id(0)] = scratch[0];
 }
 
-__kernel
-void
-diffuse(
-    __global const float *a,
-    __global float *a_new,
-    __const int width,
-    __const int height,
-    __const float dif_coeff
 
-    )
-{
-
-  int ix = get_global_id(1);
-  int iy = get_global_id(0);
-
-  if(ix > 0 && ix < width-1 && iy > 0 && iy < height- 1){
-    int index = iy*width +ix; 
-    float h = a[index];
-    float e = a[index+1];
-    float w = a[index-1];
-    float n = a[index + width];
-    float s = a[index - width];
-    float se = dif_coeff*h;
-    h += dif_coeff*0.25*(e+w+n+s) - se;
-    a_new[index] = h;
-  }
-}
-
-
-// same as diffuse() but using local memory per block
 __kernel
 void
 diffuseNew(
@@ -117,7 +88,7 @@ diffuseNew(
 
   barrier(CLK_LOCAL_MEM_FENCE);
   
-  if(ix>0 && ix < width-1 && iy > 0 && iy < height-1){
+  if(ix>0 && ix < width && iy > 0 && iy < height){
         A(ix,iy) = h0 + h*dif_coeff;
     }
 }

@@ -6,10 +6,9 @@
 #include <cstring>
 #include <cmath>
 
-#define BLOCK_SIZE 8
 #define H(IX  ,  IY)         h[(IY)*width + (IX)]
-#define NX 1000
-#define NY 1000
+#define NX 2000
+#define NY 2000
 
 #define L_DOM 1. // meter
 #define H_DOM 1. // meter
@@ -71,7 +70,7 @@ int main(int argc, char** argv)
                d = atof(optarg);
                break;
             default:
-               printf("Usage: ./diffusion -n N -d D\n");
+               printf("Usage: ./diffusion -n {iterations} -d {diffusivity} \n");
                return(1);
 
        }
@@ -101,10 +100,9 @@ int main(int argc, char** argv)
     }
     
     // --- iniital field
-    for(size_t jx = 0; jx < height; jx++){ 
+    for(size_t jx = 0; jx < height; jx++){
         for(size_t ix = 1; ix < width; ix++){ 
             float r = (0.5-x[ix])* (0.5-x[ix]) + (0.5-y[jx])*(0.5-y[jx]);
-            H(ix, jx) = 1.0*std::sin(10*r*r);
             if (r< 0.15 && r > 0.05)
                 H(ix, jx) = 1.0;
         }
@@ -124,10 +122,9 @@ int main(int argc, char** argv)
 
 
   
-//{{{ -- OpenCL boilerplate 
+//-- OpenCL boilerplate 
 
   cl_int error;
-
   cl_platform_id platform_id;
   cl_uint nmb_platforms;
   if ( clGetPlatformIDs(1, &platform_id, &nmb_platforms) != CL_SUCCESS ) {
@@ -209,7 +206,7 @@ int main(int argc, char** argv)
     return 1;
   }
 
-// }}}
+//
   
   cl_kernel diffuse_kernel_locMem = clCreateKernel(program, "diffuseNew", &error);
   if ( error != CL_SUCCESS ) {
