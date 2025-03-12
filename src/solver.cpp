@@ -158,7 +158,8 @@ int main(int argc, char** argv)
     fprintf(stderr, "cannot create command queue\n");
     return 1;
   }
-
+	
+// --- read file kernel.cl, load as program
   char *opencl_program_src;
   {
     FILE *clfp = fopen(CL_SOURCE, "r");
