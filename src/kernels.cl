@@ -86,8 +86,9 @@ diffuseNew(
      h += S[tx+1][ty+2];
 
 
-  barrier(CLK_LOCAL_MEM_FENCE);
-  
+  barrier(CLK_LOCAL_MEM_FENCE); // needed?
+
+// -- copy to global buffer
   if(ix>0 && ix < width && iy > 0 && iy < height){
         A(ix,iy) = h0 + h*dif_coeff;
     }
