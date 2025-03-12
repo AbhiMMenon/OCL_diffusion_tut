@@ -24,10 +24,10 @@ void printMat(const float *f, const size_t width, const size_t height){
 }
 
 /**
- * Writes a matrix m in gnuplot binary format
+ * Writes a matrix h in gnuplot binary format
  *
  * @param   fout        file pointer, file openened with binary write
- * @param   m           field to be written, contiguous array
+ * @param   m           field to be written, contiguous buffer
  * @param   xsize 
  * @param   ysize 
  * @param   rt          x positions
@@ -206,7 +206,7 @@ int main(int argc, char** argv)
     return 1;
   }
 
-//
+// ----		Kernels,buffers and solver	---- //
   
   cl_kernel diffuse_kernel_locMem = clCreateKernel(program, "diffuseNew", &error);
   if ( error != CL_SUCCESS ) {
